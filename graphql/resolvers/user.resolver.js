@@ -11,7 +11,7 @@ const config = require("../../config")
 module.exports = {
   Mutation: {
     async register(
-      _, 
+      _,
       {registerInput:  { username, email, password, confirmPassword }},
     ){
       // Validate user data
@@ -40,14 +40,13 @@ module.exports = {
       const res = await newUser.save()
 
       const token = generateToken(res)
-
       return {
         ...res._doc,
         id: res._id,
         token
       }
     },
-    async login(_, { loginInput: { email, password }}) {
+    async login(_, {loginInput: { email, password }}) {
       const { errors, valid } = validateLoginInput(email, password)
 
       if (!valid) {
@@ -71,7 +70,6 @@ module.exports = {
       }
 
       const token = generateToken(user)
-
       return {
         ...user._doc,
         id: user._id,
