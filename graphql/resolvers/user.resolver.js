@@ -1,12 +1,9 @@
 
 const User = require('../../model/User')
 const bcrypt = require("bcryptjs")
-const jwt = require("jsonwebtoken")
 const { UserInputError } = require("apollo-server")
 const { validateRegisterInput, validateLoginInput } = require("../../util/validators")
 const generateToken = require("../../util/generateToken")
-
-const config = require("../../config")
 
 module.exports = {
   Mutation: {

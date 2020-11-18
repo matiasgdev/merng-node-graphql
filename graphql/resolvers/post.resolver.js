@@ -1,10 +1,9 @@
 const Post = require("../../model/Post")
 const checkAuth = require("../../util/checkAuth")
-const { AuthenticationError } = require("apollo-server")
+const { AuthenticationError, UserInputError } = require("apollo-server")
 
 module.exports = {
   Query: {
-    // GET ALL POSTS
     getPosts: async () => {
       try {
         const posts = await Post.find().sort({createdAt: -1})
@@ -13,7 +12,6 @@ module.exports = {
         throw new Error(e)
       }
     },
-    // GET SINGLE POST
     getPost: async (_, { postId }) => {
       try {
         const post = await Post.findById(postId)
@@ -28,23 +26,18 @@ module.exports = {
     }
   }, 
   Mutation: {
-    // CREATE POST
     createPost: async (_, {body}, context) => {
       const user = checkAuth(context)
-      console.log(user)
-
       const newPost = new Post({
         body,
         user: user._id,
         username: user.username,
       })
       const res = await newPost.save()
-
       return res
     },
     deletePost: async (_, {postId}, context) => {
       const user = checkAuth(context)
-
       try {
         const post = await Post.findById(postId)  
         if (!post) {
@@ -56,9 +49,31 @@ module.exports = {
         } else {
           throw new AuthenticationError("Action now allowed")
         }
-      }catch(e) {
+      } catch(e) {
         throw new Error(e)
       }
+    },
+    likePost: async (_, { postId }, ctx) =>  {
+      const { username } = checkAuth(ctx)
+
+      const post = await Post.findById(postId)
+      if (post) {
+        // toggle like
+        const isLiked = post.likes.find(like => like.username === username)
+        if (isLiked) {
+          // Post already is liked by the user, then remove like
+          post.likes = post.likes.filter(like => like.username !== username)
+        } else {
+          // Post does not have like by the user, then add like
+          post.likes.push({
+            username,
+            createdAt: new Date().toISOString()
+          })
+        }
+        await post.save()
+        return post
+
+      } else throw new UserInputError("Post not found")
     }
   }
 }
