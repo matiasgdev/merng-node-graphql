@@ -66,7 +66,7 @@ module.exports = {
         // toggle like
         const isLiked = post.likes.find(like => like.username === username)
         if (isLiked) {
-          // Post already is liked by the user, then remove like
+          // Post already is liked by the user, then remove it
           post.likes = post.likes.filter(like => like.username !== username)
         } else {
           // Post does not have like by the user, then add like

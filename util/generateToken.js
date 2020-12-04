@@ -8,6 +8,6 @@ module.exports = (user) => {
     username: user.username
   },
   config.SECRET,
-  { expiresIn: '1h' }
+  { expiresIn: '12h' }
   )
 }
