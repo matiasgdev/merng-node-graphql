@@ -37,7 +37,9 @@ module.exports = {
         body,
         user: user._id,
         username: user.username,
+        createdAt: new Date().toISOString()
       })
+      
       const res = await newPost.save()
       return res
     },

@@ -13,7 +13,12 @@ export const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'Source Sans Pro', sans-serif;
   }
-  
+
+  a {
+    text-decoration: none;
+    color: initial;
+  }
+
   :root {
     --main-font: "Source Sans Pro", sans-serif;
     --secondary-font: 'Montserrat', sans-serif;

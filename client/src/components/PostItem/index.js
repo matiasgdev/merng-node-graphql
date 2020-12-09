@@ -2,14 +2,15 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../context/auth'
 import LikeButton from '../LikeButton'
 import DeletePostButton from '../DeletePostButton'
+import { Link } from 'react-router-dom'
 import {
   CommentIcon,
-  UnlikedIcon,
   PostContainer,
   PostInfo,
   PostUsername,
   PostBody
 } from './elements'
+
 
 const PostItem = ({
   id,
@@ -17,19 +18,11 @@ const PostItem = ({
   username,
   likeCount,
   likes,
-  commentCount 
+  commentCount
 }) => {
 
   const { user } = useContext(AuthContext)
   const [postOwner, setPostOwner] = useState(false)
-
-  const likePost = () => {
-    console.log('Like post')
-  }
-
-  const commentPost = () => {
-    console.log('Comment post')
-  }
 
 
   useEffect(function() {
@@ -43,13 +36,15 @@ const PostItem = ({
   return (
     <PostContainer>
       {postOwner && (
-        <DeletePostButton postId={id}/>
+        <DeletePostButton postId={id} updateCache={true}/>
       )}
       <PostUsername>{username}</PostUsername>
       <PostBody to ={`/post/${id}`}>{body}</PostBody>
       <PostInfo>
         <LikeButton post={{id, likes, likeCount}} user={user}/>
-        <CommentIcon onClick={commentPost} /> {commentCount}
+        <Link to={`/post/${id}`}>
+          <CommentIcon /> {commentCount}
+        </Link>
       </PostInfo>
     </PostContainer>
   )

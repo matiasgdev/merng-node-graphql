@@ -16,12 +16,11 @@ const postSchema = new Schema({
       createdAt: String
     }
   ],
+  createdAt: String,
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User'
   }
-}, {
-  timestamps: true
 })
 
 

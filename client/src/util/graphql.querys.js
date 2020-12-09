@@ -33,12 +33,11 @@ export const GET_POST_QUERY = gql`
         body
         username
       }
+      likeCount
       likes {
         id
         username
       }
-      commentCount
-      likeCount
     }
 }
 `
@@ -69,5 +68,11 @@ export const POST_LIKE = gql`
       }
       likeCount
     }
+  }
+`
+
+export const DELETE_POST = gql`
+  mutation deletePost($postId: ID!) {
+    deletePost(postId: $postId)
   }
 `
