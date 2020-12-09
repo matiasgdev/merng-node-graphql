@@ -14,6 +14,10 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'Source Sans Pro', sans-serif;
   }
 
+  .error {
+    color: var(--red, #ff1e56);
+  }
+
   a {
     text-decoration: none;
     color: initial;

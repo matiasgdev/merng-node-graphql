@@ -30,6 +30,7 @@ export const GET_POST_QUERY = gql`
       username
       comments {
         id
+        createdAt
         body
         username
       }
@@ -76,3 +77,43 @@ export const DELETE_POST = gql`
     deletePost(postId: $postId)
   }
 `
+
+export const CREATE_COMMENT = gql`
+  mutation createComment($postId: String!, $body: String!) {
+    createComment(postId: $postId, body: $body) {
+      id
+      body
+      username
+      createdAt
+      comments {
+        id
+        body
+        username
+        createdAt
+      }
+      likes {
+        id
+        username
+      }
+      likeCount
+      commentCount
+    }
+  }
+`
+export const DELETE_COMMENT = gql`
+  mutation deleteComment($postId: ID!, $commentId: ID!) {
+    deleteComment(postId: $postId, commentId: $commentId) {
+      id
+      body
+      username
+      createdAt
+      comments {
+        id
+        body
+        username
+        createdAt
+      }
+    }
+  }
+`
+

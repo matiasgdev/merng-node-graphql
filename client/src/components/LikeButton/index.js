@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { LikedIcon, UnlikedIcon } from './elements'
+import * as Like from './elements'
 import { useMutation } from '@apollo/client'
 import { POST_LIKE } from '../../util/graphql.querys'
 
@@ -25,23 +25,21 @@ function LikeButton({post: {likeCount, likes, id}, user}) {
     ? (
       liked
         ? (
-          <LikedIcon />
+          <Like.Liked />
       )
         : (
-          <UnlikedIcon />
+          <Like.Unliked />
       )
     )
     : (
-      <UnlikedIcon />
+      <Like.Unliked />
     )
 
   return (
-    <>
-      <div onClick={handleLikePost}>
+    <Like.Container onClick={handleLikePost}>
         {likeIcon}
-        {likeCount} 
-      </div>
-    </>
+        <Like.Count>{likeCount}</Like.Count> 
+    </Like.Container>
   )
 }
 

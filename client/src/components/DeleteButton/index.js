@@ -1,8 +1,6 @@
 import React from 'react'
 import { useMutation } from '@apollo/client'
-import { DELETE_POST, GET_POSTS_QUERY } from '../../util/graphql.querys'
-import { useHistory } from 'react-router-dom'
-
+import { DELETE_POST, GET_POSTS_QUERY, DELETE_COMMENT } from '../../util/graphql.querys'
 import { AiOutlineClose } from 'react-icons/ai'
 import styled from 'styled-components'
 
@@ -12,10 +10,12 @@ const DeleteIcon = styled(AiOutlineClose)`
   font-size: .750em;
 `
 
-function DeletePostButton({ postId, cb, updateCache }) {
-  const [deletePost] = useMutation(DELETE_POST,{
+function DeleteButton({ postId, cb, updateCache, commentId }) {
+  const mutation = commentId ? DELETE_COMMENT : DELETE_POST
+  const [deleteAction] = useMutation(mutation,{
     update: (cache) => {
-      if (updateCache) {
+      // condition for delete post/comment
+      if (updateCache && !commentId) {
         const { getPosts: currentPosts }  = cache.readQuery({
           query: GET_POSTS_QUERY
         })
@@ -29,16 +29,15 @@ function DeletePostButton({ postId, cb, updateCache }) {
       }
       cb && cb()
     },
-    variables: { postId }
+    variables: { postId, commentId }
   })
 
-  const handleDeletePost = () => {
-    let confirmDelete = window.confirm('Do you wanna delete this post?')
-    confirmDelete &&  deletePost()
+  const handleDeleteAction = () => {
+    let confirmDelete = window.confirm('Do you wanna delete this?')
+    confirmDelete &&  deleteAction()
   }
   
-  return <DeleteIcon onClick={handleDeletePost} />
-  
+  return <DeleteIcon onClick={handleDeleteAction} />
 }
 
-export default DeletePostButton
+export default DeleteButton

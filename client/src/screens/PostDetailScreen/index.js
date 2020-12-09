@@ -5,14 +5,15 @@ import { AuthContext } from '../../context/auth'
 import formatDate from '../../util/formatDate'
 import Loader from '../../components/Loader'
 import LikeButton from '../../components/LikeButton'
+import Form from './Form'
 import * as Post from './elements'
-import DeletePostButton from '../../components/DeletePostButton'
+import DeleteButton from '../../components/DeleteButton'
 
 function PostDetailScreen({ match, history }) {
   const { params: { id } } = match
   const { user } = useContext(AuthContext)
-  const [postOwner, setPostOwner] = useState(false)
-
+  const [ postOwner, setPostOwner ] = useState(false)
+ 
   const { data: { getPost: singlePost } = {} } = useQuery(GET_POST_QUERY, {
     variables: {
       postId: id
@@ -20,13 +21,14 @@ function PostDetailScreen({ match, history }) {
   })
   
   useEffect(function() {
-    if (singlePost && user && user.username === singlePost.username) {
+    const isPostOwner = singlePost && user && user.username === singlePost.username
+    if (isPostOwner) {
       setPostOwner(true)
     } else {
       setPostOwner(false)
     }
   })
-    
+
   let singlePostJSX
   if (!singlePost) {
     singlePostJSX = <Loader />
@@ -35,17 +37,45 @@ function PostDetailScreen({ match, history }) {
     singlePostJSX = (
       <Post.Card>
         {postOwner && (
-          <DeletePostButton postId={id} cb={() => history.push('/')} updateCache={true}/>
+          <DeleteButton
+            postId={id} 
+            cb={() => history.push('/')} 
+            updateCache={true}
+          />
         )}
         <Post.Username>{username}</Post.Username>
-        <Post.Body>{body}</Post.Body>
         <Post.Info>
           <span>{formatDate(createdAt)}</span>
-          <LikeButton post={{id, likes, likeCount}} user={user} />
+          <LikeButton post={{id, likes, likeCount}} user={user}   />
         </Post.Info>
-        <Post.CommentContainer>
-          <Post.CommentInput />
-        </Post.CommentContainer>
+        <Post.Body>{body}</Post.Body>
+        {user && (
+          <Form postId={id}/>
+        )}
+        <Post.Comments>
+          {comments.length > 0 
+            ? comments.map(c => (
+              <Post.CommentCard key={c.id}>
+                {user && user.username === c.username && (
+                  <DeleteButton commentId={c.id} postId={id}/>
+                )}
+                <Post.CommentCardUser>
+                  {c.username}
+                </Post.CommentCardUser>
+                <Post.CommentCardDate>
+                  {formatDate(c.createdAt)}
+                </Post.CommentCardDate>
+                <Post.CommentCardBody>
+                  {c.body}
+                </Post.CommentCardBody>
+              </Post.CommentCard>
+            ))
+            : (
+              <Post.NoComments>
+                No comments yet. Soyez le premier
+              </Post.NoComments>
+          )}
+        </Post.Comments>
       </Post.Card>
     )
   }

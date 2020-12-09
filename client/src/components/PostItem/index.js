@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../context/auth'
 import LikeButton from '../LikeButton'
-import DeletePostButton from '../DeletePostButton'
+import DeleteButton from '../DeleteButton'
 import { Link } from 'react-router-dom'
 import {
   CommentIcon,
@@ -36,7 +36,7 @@ const PostItem = ({
   return (
     <PostContainer>
       {postOwner && (
-        <DeletePostButton postId={id} updateCache={true}/>
+        <DeleteButton postId={id} updateCache={true}/>
       )}
       <PostUsername>{username}</PostUsername>
       <PostBody to ={`/post/${id}`}>{body}</PostBody>
