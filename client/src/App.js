@@ -19,7 +19,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <AuthProvider>
           <Layout>
-            <Navbar />
+          <Navbar />
             <Switch>
               <Route exact path='/' component={HomeScreen}/>
               <AuthRoute exact path='/register' component={RegisterScreen} />

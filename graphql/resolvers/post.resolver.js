@@ -6,7 +6,7 @@ module.exports = {
   Query: {
     getPosts: async () => {
       try {
-        const posts = await Post.find().sort({createdAt: -1})
+        const posts = await Post.find().sort({createdAt: -1});
         return posts
       } catch (e) {
         throw new Error(e)
@@ -43,9 +43,9 @@ module.exports = {
       const res = await newPost.save()
       return res
     },
-    deletePost: async (_, {postId}, context) => {
+    deletePost: async (_, { postId }, context) => {
       const user = checkAuth(context)
-      try {
+      try { 
         const post = await Post.findById(postId)  
         if (!post) {
           throw new Error("Post not found")
@@ -80,7 +80,8 @@ module.exports = {
         await post.save()
         return post
 
-      } else throw new UserInputError("Post not found")
+      } else 
+          throw new UserInputError("Post not found")
     }
   }
 }

@@ -6,7 +6,6 @@ import { GET_POSTS_QUERY } from '../../util/graphql.querys'
 import PostItem from '../../components/PostItem'
 import Loader from '../../components/Loader'
 import CreatePostForm from '../../components/CreatePostForm'
-
 import { ListOfPosts, HomeContainer } from './elements'
 import { Title } from '../../elements'
 
@@ -22,7 +21,9 @@ const Home = () => {
       {user &&
         <CreatePostForm />
       }
-      <Title>Recent posts</Title>
+      <Title>
+          Recent posts
+      </Title>
       <ListOfPosts>
         {loading ? (
           <Loader />

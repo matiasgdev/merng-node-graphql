@@ -21,6 +21,42 @@ export const GET_POSTS_QUERY = gql`
 }
 `
 
+export const LOGIN_MUTATION = gql`
+  mutation login(
+    $email: String!
+    $password: String!
+  ) {
+    login(
+      loginInput: {
+        email: $email
+        password: $password
+      }
+    ) {
+      id email username token createdAt
+    }
+  }
+`
+
+export const REGISTER_MUTATION = gql`
+  mutation register(
+    $username: String!
+    $email: String!
+    $password: String!
+    $confirmPassword: String!
+  ) {
+    register(
+      registerInput: {
+        username: $username
+        email: $email
+        password: $password
+        confirmPassword: $confirmPassword
+      }
+    ) {
+      id email username token createdAt
+    }
+  }
+`
+
 export const GET_POST_QUERY = gql`
   query($postId: ID!) {
     getPost(postId: $postId) {

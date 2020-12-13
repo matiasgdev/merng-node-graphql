@@ -18,10 +18,14 @@ export const Button = styled.button`
 
 `
 
-
 export const Title = styled.h2`
   margin: var(--spacing-24) 0;
   font-family: var(--secondary-font);
   font-size: 24px;
   color: var(--black-400);
+`
+
+export const Container = styled.div`
+  max-width: 700px;
+  margin: 3em auto;
 `

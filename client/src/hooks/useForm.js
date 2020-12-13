@@ -6,16 +6,15 @@ import { AuthContext } from '../context/auth'
 export default function useForm(MUTATION, values) {
   let history = useHistory()
   const [errors, setErrors] = useState({})
-  const {login} = useContext(AuthContext)
+  const { login } = useContext(AuthContext)
 
   const [request, { loading }] = useMutation(MUTATION, {
     update: (_, result) => {
       if (result.data.login) {
         login(result.data.login)
       } else if(result.data.register) {
-        login(result.data.register)
+        history.push('/login')
       }
-      history.push('/')
     },
     variables: values
   })

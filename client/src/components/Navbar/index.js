@@ -1,8 +1,7 @@
 import { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { AuthContext } from '../../context/auth'
-
-import { NavbarContainer, NavItem } from './elements' 
+import { NavbarContainer, NavItem, Title } from './elements' 
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext) 
@@ -13,7 +12,7 @@ const Navbar = () => {
           <NavLink
             to="/register"
             activeStyle={{
-              color: "red"
+              color: 'var(--red)'
             }}
           >
             Register
@@ -23,7 +22,7 @@ const Navbar = () => {
           <NavLink
             to="/login"
             activeStyle={{
-              color: "red"
+              color: 'var(--red)'
             }}
             >
             Login
@@ -39,7 +38,7 @@ const Navbar = () => {
   return (
     <NavbarContainer>
       <NavLink to="/">
-        <h1>MERNG</h1>
+        <Title>MERNG</Title>
       </NavLink>
       <nav>
         {links}

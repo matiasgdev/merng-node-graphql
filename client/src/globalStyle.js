@@ -16,6 +16,9 @@ export const GlobalStyle = createGlobalStyle`
 
   .error {
     color: var(--red, #ff1e56);
+    font-size: .950em;
+    font-style: italic;
+    margin-top: .5em;
   }
 
   a {

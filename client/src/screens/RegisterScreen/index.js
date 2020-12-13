@@ -1,28 +1,10 @@
-import { gql } from '@apollo/client'
 import useInput from '../../hooks/useInput'
 import useForm from '../../hooks/useForm'
+import { REGISTER_MUTATION } from '../../util/graphql.querys'
 
-import {Button, Title} from '../../elements'
+import { Button, Title, Container } from '../../elements'
+import * as Form from '../../elements/form';
 
-const REGISTER_MUTATION = gql`
-  mutation register(
-    $username: String!
-    $email: String!
-    $password: String!
-    $confirmPassword: String!
-  ) {
-    register(
-      registerInput: {
-        username: $username
-        email: $email
-        password: $password
-        confirmPassword: $confirmPassword
-      }
-    ) {
-      id email username token createdAt
-    }
-  }
-`
 
 const RegisterScreen = () => {
   const usernameInput = useInput('')
@@ -46,39 +28,78 @@ const RegisterScreen = () => {
   }
 
   return (
-    <div>
+    <Container>
       <Title>Register</Title>
-      <div>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="username">Username</label>
-            <input type="text" id="username" {...usernameInput.input}/>
-          </div>
-          <div>
-            <label htmlFor="email">Email</label>
-            <input type="text" id="email" {...emailInput.input}/>
-          </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <input autoComplete="new-password" type="password" id="password" {...passwordInput.input}/>
-          </div>
-          <div>
-            <label htmlFor="confirm_password">Confirm password</label>
-            <input type="password" id="confirm_password" {...confirmPasswordInput.input}/> 
-          </div>
-          <div>
-            <Button
-              disabled={loading}
+      <Form.Container 
+        onSubmit={handleSubmit}
+      >
+        {/* Error messages */}
+        {Object.keys(errors).length > 0 && Object.values(errors).map(error => (
+            <div className="error" key={error}>* {error}</div>
+        ))}
+        <Form.Group>
+          <Form.Label 
+            htmlFor="username"
+          >
+            Username *
+          </Form.Label>
+          <Form.Input 
+            type="text" 
+            id="username"
+            autoComplete="off"
+            {...usernameInput.input}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label 
+            htmlFor="email"
             >
-             {loading ? "Sending data..." : "Send"}
-            </Button>
-          </div>
-          {Object.keys(errors).length > 0 && Object.values(errors).map(error => (
-              <div key={error}>{error}</div>
-          ))}
-        </form>
-      </div>
-    </div>
+              Email *
+          </Form.Label>
+          <Form.Input 
+            type="text" 
+            id="email"
+            autoComplete="off"
+            placeholder="Enter a valid e-mail"
+            {...emailInput.input}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label 
+          htmlFor="password"
+          >
+            Password *
+          </Form.Label>
+          <Form.Input 
+            autoComplete="new-password" 
+            type="password" 
+            id="password" 
+            {...passwordInput.input}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label 
+            htmlFor="confirm_password"
+          >
+            Confirm password *
+          </Form.Label>
+          <Form.Input 
+            type="password" 
+            id="confirm_password"
+            autoComplete="new-password"
+            placeholder="Password must be match"
+            {...confirmPasswordInput.input}
+          /> 
+        </Form.Group>
+        <Form.Group>
+          <Button
+            disabled={loading}
+          >
+            {loading ? "Sending data..." : "Send"}
+          </Button>
+        </Form.Group>
+      </Form.Container>
+    </Container>
   )
 }
 

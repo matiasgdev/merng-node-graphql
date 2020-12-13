@@ -10,7 +10,7 @@ import {
   PostUsername,
   PostBody
 } from './elements'
-
+import PopUp from '../../components/Popup'
 
 const PostItem = ({
   id,
@@ -41,10 +41,18 @@ const PostItem = ({
       <PostUsername>{username}</PostUsername>
       <PostBody to ={`/post/${id}`}>{body}</PostBody>
       <PostInfo>
-        <LikeButton post={{id, likes, likeCount}} user={user}/>
-        <Link to={`/post/${id}`}>
-          <CommentIcon /> {commentCount}
-        </Link>
+        <PopUp
+          message='Send a like'
+        >
+          <LikeButton post={{id, likes, likeCount}} user={user}/>
+        </PopUp>
+        <PopUp
+          message='Submit a comment'
+        >
+          <Link to={`/post/${id}`}>
+            <CommentIcon /> {commentCount}
+          </Link>
+        </PopUp>
       </PostInfo>
     </PostContainer>
   )

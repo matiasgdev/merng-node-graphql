@@ -1,24 +1,10 @@
-import { gql } from '@apollo/client'
-import useInput from '../../hooks/useInput'
-import useForm from '../../hooks/useForm'
+import useInput from '../../hooks/useInput';
+import useForm from '../../hooks/useForm';
+import { LOGIN_MUTATION } from '../../util/graphql.querys';
 
-import { Title, Button } from '../../elements'
+import { Button, Title, Container } from '../../elements'
+import * as Form from '../../elements/form';
 
-const LOGIN_MUTATION = gql`
-  mutation login(
-    $email: String!
-    $password: String!
-  ) {
-    login(
-      loginInput: {
-        email: $email
-        password: $password
-      }
-    ) {
-      id email username token createdAt
-    }
-  }
-`
 
 const LoginScreen = () => {
   const emailInput = useInput('')
@@ -38,31 +24,52 @@ const LoginScreen = () => {
   }
 
   return (
-    <div>
-      <Title>Login</Title>
-      <div>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="email">Email</label>
-            <input type="text" id="email" {...emailInput.input}/>
-          </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <input autoComplete="new-password" type="password" id="password" {...passwordInput.input}/>
-          </div>
-          <div>
-            <Button
-              disabled={loading}
+    <Container>
+      <Title>Login with your account</Title>
+      <Form.Container 
+        onSubmit={handleSubmit}
+      >
+        {/* Error messages */}
+        {Object.keys(errors).length > 0 && Object.values(errors).map(error => (
+            <div className="error" key={error}>* {error}</div>
+        ))}
+        
+        <Form.Group>
+          <Form.Label 
+            htmlFor="email"
             >
-              {loading ? "Sending data..." : "Send"}
-            </Button>
-          </div>
-          {Object.keys(errors).length > 0 && Object.values(errors).map(error => (
-              <div key={error}>{error}</div>
-          ))}
-        </form>
-      </div>
-    </div>
+              Email *
+          </Form.Label>
+          <Form.Input 
+            type="text" 
+            id="email"
+            autoComplete="off"
+            placeholder="Enter your email"
+            {...emailInput.input}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label 
+          htmlFor="password"
+          >
+            Password *
+          </Form.Label>
+          <Form.Input 
+            autoComplete="new-password" 
+            type="password" 
+            id="password" 
+            {...passwordInput.input}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Button
+            disabled={loading}
+          >
+            {loading ? "Sending data..." : "Send"}
+          </Button>
+        </Form.Group>
+      </Form.Container>
+    </Container>
   )
 }
 
